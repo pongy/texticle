@@ -1,4 +1,5 @@
 require 'active_record'
+require 'pry'
 
 module Texticle
   def search(query = "", exclusive = true)
@@ -16,9 +17,11 @@ module Texticle
 
     rank = connection.quote_column_name('rank' + rand.to_s)
 
-    select("#{quoted_table_name + '.*,' if scoped.select_values.empty?} #{@similarities.join(" + ")} AS #{rank}").
-      where(@conditions.join(exclusive ? " AND " : " OR ")).
-      order("#{rank} DESC")
+    query = select("#{quoted_table_name + '.*,' if scoped.select_values.empty?} #{@similarities.join(" + ")} AS #{rank}")
+    query = query.where(@conditions.join(exclusive ? " AND " : " OR "))
+    query = query.order("#{rank} DESC") if scoped.group_values.empty?
+
+    query
   end
 
   def method_missing(method, *search_terms)
