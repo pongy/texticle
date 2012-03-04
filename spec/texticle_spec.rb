@@ -75,6 +75,7 @@ class TexticleTest < Test::Unit::TestCase
 
       should "handle grouping and counting well" do
         assert_equal({ @qc.id => 2, @jw.id => 1, @pa.id => 1 }, Character.group(:web_comic_id).search(description: 'anger').count)
+        assert_equal({ @qc.id => 2, @jw.id => 1, @pa.id => 1 }, Character.search(description: 'anger').group(:web_comic_id).count)
       end
     end
   end
