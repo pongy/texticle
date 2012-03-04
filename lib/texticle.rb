@@ -1,5 +1,4 @@
 require 'active_record'
-require 'pry'
 
 module Texticle
   def search(query = "", exclusive = true)
